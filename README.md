@@ -1,5 +1,7 @@
 # Redux Essentials Tutorial Example
 
+Redux 기반의 React 앱 제작 실습(Redux 공식 문서에 따른 실습 예제)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
 ## Available Scripts
