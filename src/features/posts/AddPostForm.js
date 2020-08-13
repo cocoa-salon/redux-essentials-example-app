@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 // 컴포넌트에서 액션을 디스패치하기 위해 useDispatch 함수를 가져온다.
 import { postAdded } from './postsSlice'
 // 액션 생성함수
-import { nanoid } from '@reduxjs/toolkit'
-// 무작위 ID 해시값을 생성하는 패키지
+// import { nanoid } from '@reduxjs/toolkit' 
+// 무작위 ID 해시값을 생성하는 패키지, prepare 메서드를 통해, 여기서는 더이상 필요하지 않다. 
 
 export const AddPostForm = () => {
   const [title, setTitle] = useState('');
@@ -20,6 +20,7 @@ export const AddPostForm = () => {
   const onSavePostClicked = () => {
     if (title && content) {
       // postAdded 액션 객체를 생성할 때 payload 값을 전달한다. 
+      /*
       dispatch(
         postAdded({
           id: nanoid(), // 무작위 ID 해시값 생성
@@ -27,6 +28,9 @@ export const AddPostForm = () => {
           content
         })
       )
+      */
+      dispatch(postAdded(title, content));
+      // createSlice의 prepare 메서드를 통해, 상태 업데이트에 필요한 action 객체 생성을 createSlice 내에서 직접 담당하게 된다. 
       setTitle('');
       setContent('');
       // 포스트 저장 후 입력필드를 비운다. 
