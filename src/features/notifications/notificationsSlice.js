@@ -20,15 +20,28 @@ export const fetchNotifications = createAsyncThunk(
 const notificationsSlice = createSlice({
   name: 'notifications',
   initialState: [],
-  reducers: {},
+  reducers: {
+    allNotificationsRead: (state, action) => {
+      // 모든 알림 읽음 처리
+      state.forEach(notification => {
+        notification.read = true;
+      })
+    }
+  },
   extraReducers: {
     [fetchNotifications.fulfilled]: (state, action) => {
+      state.forEach(notification => {
+        notification.isNew = !notification.read;
+      })
+      // 기존 알림을 과거 알림으로 처리
       state.push(...action.payload);
       state.sort((a, b) => b.date.localeCompare(a.date));
       // 최근 알림이 가장 먼저 나타나도록 정렬
     }
   }
 })
+
+export const { allNotificationsRead } = notificationsSlice.actions;
 
 export default notificationsSlice.reducer;
 

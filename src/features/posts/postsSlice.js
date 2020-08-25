@@ -1,4 +1,4 @@
-import { createSlice, nanoid, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, nanoid, createAsyncThunk, createSelector } from '@reduxjs/toolkit'
 // createSlice를 이용하여 액션, 액션 생성 함수, 초기값, 리듀서를 모두 정의할 수 있다. 
 import { client } from '../../api/client'
 
@@ -93,3 +93,11 @@ export const selectAllPosts = state => state.posts.posts;
 
 export const selectPostById = (state, postId) =>
   state.posts.posts.find(post => post.id === postId);
+
+// memoized 함수를 리턴하기 위한 createSelector 메서드
+export const selectPostsByUser = createSelector([
+  selectAllPosts, (state, userId) => userId
+  // input Selectors
+], (posts, userId) => posts.filter(post => post.user === userId)
+  // output Selector
+);

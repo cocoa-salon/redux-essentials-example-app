@@ -3,19 +3,17 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { selectUsersById } from './userSlice';
-import { selectAllPosts } from '../posts/postsSlice';
+import { selectPostsByUser } from '../posts/postsSlice';
 
 export const UserPage = ({ match }) => {
   const { userId } = match.params;
-
   const user = useSelector(state => selectUsersById(state, userId));
 
-  const postsForUser = useSelector(state => {
-    const allPosts = selectAllPosts(state);
-    // 스토어에 저장된 모든 포스트를 가져온다.
-    return allPosts.filter(post => post.user === userId);
-    // url 정보에서 전달받은 사용자 아이디를 통해, 특정 아이디가 작성한 포스트만 필터링한다. 
-  });
+  const postsForUser = useSelector(state =>
+    // const allPosts = selectAllPosts(state);
+    // return allPosts.filter(post => post.user === userId);
+    selectPostsByUser(state, userId) // createSelector를 통해 생성한 memoized 함수
+  );
 
   const postTitles = postsForUser.map(post => (
     <li key={post.id}>

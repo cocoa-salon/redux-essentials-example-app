@@ -4,7 +4,6 @@ import { selectAllPosts, fetchPosts } from './postsSlice';
 import { PostExcerpt } from './PostExcerpt';
 
 export const PostsList = () => {
-  // const posts = useSelector(state => state.posts);
   const posts = useSelector(selectAllPosts);
   // 리덕스 스토어에 접근하여 posts 상태값을 가져옴
   // 스토어가 업데이트될 때마다 실행되며, 변경된 값에 따라 렌더링이 이루어진다. 
