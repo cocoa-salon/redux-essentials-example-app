@@ -1,7 +1,10 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import { client } from '../../api/client';
 
-const initialState = [];
+
+const usersAdapter = createEntityAdapter();
+
+const initialState = usersAdapter.getInitialState();
 
 export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
   const response = await client.get('/fakeApi/users');
@@ -13,17 +16,18 @@ const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchUsers.fulfilled]: (state, action) => {
-      return action.payload;
-      // state = state.concat(action.payload); 이렇게 하면 정상적으로 스토어에 저장이 되지 않는다. 
-    }
+    [fetchUsers.fulfilled]: usersAdapter.setAll
+    // 기존 사용자 목록을 서버로부터 가져온 사용자 목록으로 대체
   }
 })
 
-export const selectAllUsers = state => state.users;
 
-export const selectUsersById = (state, userId) =>
-  state.users.find(user => user.id === userId)
+
+export const {
+  selectAll: selectAllUsers,
+  selectById: selectUserById,
+  selectIds: selectUserIds
+} = usersAdapter.getSelectors(state => state.users);
 
 export default userSlice.reducer;
 

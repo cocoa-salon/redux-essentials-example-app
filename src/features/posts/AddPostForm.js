@@ -2,11 +2,9 @@ import React, { useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 // 컴포넌트에서 액션을 디스패치하기 위해 useDispatch 함수를 가져온다.
-import { unwrapResult } from '@reduxjs/toolkit'
-import { addNewPost } from './postsSlice'
-// 액션 생성함수
-// import { nanoid } from '@reduxjs/toolkit' 
-// 무작위 ID 해시값을 생성하는 패키지, prepare 메서드를 통해, 여기서는 더이상 필요하지 않다. 
+import { unwrapResult } from '@reduxjs/toolkit';
+import { addNewPost } from './postsSlice';
+import { selectAllUsers } from '../users/userSlice';
 
 export const AddPostForm = () => {
   const [title, setTitle] = useState('');
@@ -19,7 +17,7 @@ export const AddPostForm = () => {
   const onContentChanged = e => setContent(e.target.value);
   const onAuthorChanged = e => setUserId(e.target.value);
 
-  const users = useSelector(state => state.users);
+  const users = useSelector(selectAllUsers);
   const dispatch = useDispatch();
 
   // const canSave = Boolean(userId) && Boolean(title) && Boolean(content);
@@ -32,7 +30,6 @@ export const AddPostForm = () => {
         const resultAction = await dispatch(
           addNewPost({ title, content, user: userId })
         )
-        console.log(resultAction);
         unwrapResult(resultAction);
         setTitle('');
         setContent('');
@@ -42,11 +39,6 @@ export const AddPostForm = () => {
       } finally {
         setAddRequestStatus('idle')
       }
-
-      // dispatch(postAdded(userId, title, content));
-      // // createSlice의 prepare 메서드를 통해, 상태 업데이트에 필요한 action 객체 생성을 createSlice 내에서 직접 담당하게 된다. 
-      // setTitle('');
-      // setContent('');
     }
   }
 
